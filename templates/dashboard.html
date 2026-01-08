@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: white;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    body::before {
+        content: "";
+        background-image: url("{{ url_for('static', filename='css/logo.png') }}");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        opacity: 0.1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    header {
+        text-align: center;
+        background-color: #0a2540;
+        padding: 20px;
+        color: white;
+        font-size: larger;
+        position: relative;
+    }
+
+    /* Profile Icon in header */
+    #profile-icon {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+    #profile-icon img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    /* Buttons container */
+    .container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 50px;
+    }
+    .div {
+        background-color: rgb(239, 239, 245);
+        padding: 60px;
+        margin: 20px;
+        border-radius: 10px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .div:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #2d4c6d;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    /* Profile slide panel */
+    #profile-panel {
+        position: fixed;
+        top: 0;
+        right: -45%; /* hidden initially */
+        width: 20%;
+        height: 90%;
+        background-color: #f4f6f8;
+        box-shadow: -3px 0 8px rgba(0,0,0,0.2);
+        padding: 20px;
+        transition: right 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Overlay */
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.2);
+        display: none;
+        z-index: 999;
+    }
+
+    /* Profile top section */
+    #profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    #profile-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 12px;
+    }
+    #profile-header span {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    /* Stats */
+    #profile-panel p {
+        margin: 8px 0;
+    }
+
+    .logout-btn {
+        display:block;
+        padding: 10px;
+        text-align:center;
+        background-color:#2d4c6d;
+        color:white;
+        border-radius:5px;
+        text-decoration:none;
+        margin-top: auto;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    Dashboard
+    <!-- Profile Icon -->
+    <div id="profile-icon">
+        <img src="{{ url_for('static', filename='css/logo.png') }}" alt="Profile">
+        <span>{{ name }}</span>
+    </div>
+</header>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Profile Slide Panel -->
+<div id="profile-panel">
+    <div id="profile-content" style="flex:1; overflow-y:auto;">
+        <div id="profile-header">
+            <img src="{{ url_for('static', filename='css/logo.png') }}" alt="Profile">
+            <span>{{ name }}</span>
+        </div>
+        <hr>
+        <p><strong>Email:</strong> {{ email_id }}</p>
+        <p><strong>Total Scans:</strong> {{ total }}</p>
+        <p><strong>Phishing:</strong> {{ phishing }}</p>
+        <p><strong>Safe:</strong> {{ safe }}</p>
+    </div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</div>
+
+<!-- Scan / History buttons -->
+<div class="container">
+    <div class="div">
+        <h2>Scan Your Email</h2>
+        <h3>Click scan button below</h3>
+        <a href="/scan" class="btn">Scan Email</a>
+    </div>
+    <div class="div">
+        <h2>View Scan History</h2>
+        <h3>Click history button below</h3>
+        <a href="/history" class="btn">History</a>
+    </div>
+</div>
+
+<script>
+const profileIcon = document.getElementById('profile-icon');
+const profilePanel = document.getElementById('profile-panel');
+const overlay = document.getElementById('overlay');
+
+function openPanel() {
+    profilePanel.style.right = "0";
+    overlay.style.display = "block";
+}
+function closePanel() {
+    profilePanel.style.right = "-45%";
+    overlay.style.display = "none";
+}
+
+profileIcon.addEventListener('click', () => {
+    const panelRight = window.getComputedStyle(profilePanel).right;
+    if(panelRight === "0px") {
+        closePanel();
+    } else {
+        openPanel();
+    }
+});
+
+overlay.addEventListener('click', closePanel);
+</script>
+
+</body>
+</html>

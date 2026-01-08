@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Page</title>
+<style>
+ body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+       font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+}
+     body::before {
+    content: "";
+    /* Use your Flask image path here */
+    background-image: url("{{ url_for('static', filename='css/logo.png') }}");
+    
+    background-size: contain;     /* 'contain' keeps the logo shape, 'cover' fills screen */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; /* Keeps it in place while scrolling */
+    
+    /* Control the transparency here (0.1 is very light, 1.0 is solid) */
+    opacity: 0.1; 
+    
+    /* This stretches the watermark to cover the whole screen */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Puts the image BEHIND your text */
+    z-index: -1; 
+
+    
+    
+}
+div{
+    text-align: center;
+    padding: 60px;
+    display: inline-block;
+    margin-top: 60px;
+    margin-left: 100px;
+    border-radius: 18px;
+    background-color: rgb(224, 224, 236);
+}
+header{
+    text-align: center;
+        background-color: #0a2540;
+        padding: 10px;
+        color: white;
+        font-size: larger;
+}
+input{
+    height: 20px;
+}
+nav{
+    text-align: right;
+      padding: 12px 24px; 
+          color: white; 
+          text-decoration: none; 
+          border-radius: 5px;
+    
+}
+.div:hover{
+      transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.div{
+  text-align: center;
+    padding: 60px;
+    display: inline-block;
+    margin-left: 100px;   
+    border-radius: 10px;
+    background-color: rgb(239, 239, 245);
+}
+</style>
+</head>
+<body>
+    <header><h2> REGISTRATION PAGE </h2>
+    <nav><a href="/home" style="color: #f4f6f8;">Home</a></nav>
+    </header>    
+    <div class="div">
+    <fieldset style="padding: 30px;">
+<legend><h2> Sign Up </h2></legend>
+{% if error %}
+<p style="color:red; font-weight:bold;">{{ error }}</p>
+{% endif %}
+<form method="post" action="/register">
+    <input type="text" name="name" placeholder="Enter your name" required><br><br>
+<input type="email" name="email" placeholder="Email" required><br><br>
+<input type="password" name="password"  placeholder="Create Password" required><br><br>
+<input type="password" name="confirm_password" placeholder="Confirm password"><br><br>
+<button type="submit">Register</button>
+</form>
+</fieldset>
+</div>
+</body>
+</html>
+

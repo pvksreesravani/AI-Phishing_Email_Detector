@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Scanner</title>
+
+    <script src="{{ url_for('static', filename='js/scan.js') }}"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+   /* ===================== Popup Design ===================== */
+.custom-modal {
+    border: 5px solid;            /* border thickness */
+    border-radius: 40px;          /* rounded corners */
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3); /* subtle shadow */
+}
+
+/* Background colors */
+.safe-bg {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border-color: #27ae60;       /* green border */
+}
+
+.danger-bg {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border-color: #c0392b;       /* red border */
+}
+
+/* Blinking / pulse animation for phishing */
+@keyframes dangerPulse {
+    0% {
+        box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(231, 76, 60, 1);
+        transform: scale(1.02);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+        transform: scale(1);
+    }
+}
+
+.blink-danger {
+    animation: dangerPulse 0.8s infinite !important;
+}
+
+/* Modal header & body */
+.custom-header {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+.custom-body {
+    padding: 30px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.custom-footer {
+    justify-content: center;
+    background-color: #f8f9fa;
+    padding: 15px;
+}
+.div:hover{
+      transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.div{
+  
+      text-align: center;
+    padding: 60px;
+    display: inline-block;
+    margin-left: 40px;
+    margin: 30px;
+    border-radius: 10px;
+    background-color: rgb(239, 239, 245);
+}
+
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+<div class="div">
+<h2>Email Scanner</h2>
+
+<form method="post" onsubmit="return validateScan()">
+    <textarea id="emailText" name="email" rows="10" cols="60"
+        placeholder="Paste email here..." required></textarea><br><br>
+
+    <button type="submit">Scan</button>
+</form>
+</div>
+<div id="loading" style="display:none;">
+    <p>🔍 Scanning email... Please wait</p>
+</div>
+
+<!-- ================= BOOTSTRAP POPUP ================= -->
+{% if result %}
+<div class="modal fade show" style="display:block;" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content custom-modal
+        {% if result|upper == 'PHISHING' %}
+            danger-bg blink-danger
+        {% else %}
+            safe-bg
+        {% endif %}
+    ">
+
+      <div class="custom-header">
+        {% if result|upper == 'PHISHING' %}
+            🚨 EMAIL NOT SAFE
+        {% else %}
+            ✅ EMAIL IS SAFE
+        {% endif %}
+      </div>
+
+      <div class="custom-body">
+        <p><strong>Status:</strong> {{ result }}</p>
+        <p><strong>Risk Score:</strong> {{ score }}</p>
+      </div>
+
+      <div class="modal-footer custom-footer">
+        <button class="btn btn-dark" onclick="window.location.href='/dashboard'">
+            Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>
+{% endif %}
+
+
+</body>
+</html>
