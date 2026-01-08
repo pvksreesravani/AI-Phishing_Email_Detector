@@ -27,6 +27,7 @@ An AI-powered web application that detects phishing emails and provides a risk s
 ---
 
 ## Project Structure
+
 AI-Phishing_Email_Detector/
 │
 ├── app.py # Main Flask application
