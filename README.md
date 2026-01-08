@@ -1,62 +1,132 @@
-# AI-Phishing Email Detector
+🛡️ AI Phishing Email Detector
+📌 Overview
 
-An AI-powered web application that detects phishing emails and provides a risk score. Users can scan emails, view scan history, and monitor results in a user-friendly dashboard. Admins can see all user scans and statistics.
+AI Phishing Email Detector is a machine learning–based web application that helps users identify whether an email is Phishing or Safe.
+The system analyzes email content using Natural Language Processing (NLP) and provides a risk score along with the prediction.
 
----
+This project aims to improve cybersecurity awareness and protect users from online scams.
 
-## Features
+❗ Problem Statement
 
-### User Features
-- **Scan Emails:** Users can paste email content and get a phishing/safe prediction with a risk score.
-- **Scan History:** View the history of all scanned emails.
-- **Profile Panel:** Check total scans, phishing and safe counts, and logout.
-- **Authentication:** Secure login and registration with password hashing.
+Phishing emails are one of the most common cyber threats today.
+Many users unknowingly fall victim to fake emails that steal sensitive information such as passwords, bank details, and personal data.
 
-### Admin Features
-- **Dashboard:** View total scans, phishing, and safe counts across all users.
-- **History:** See scan history for all users.
+Existing solutions are either:
 
----
+Too complex for normal users
 
-## Technologies Used
-- **Backend:** Python, Flask, MySQL
-- **Machine Learning:** Scikit-learn (model and vectorizer for email classification)
-- **Frontend:** HTML, CSS, JavaScript
-- **Database:** MySQL
+Not transparent about risk
 
----
+Limited in real-time interaction
 
-## Project Structure
+💡 Proposed Solution
 
+This project provides a user-friendly AI-powered web platform where users can:
+
+Paste email content
+
+Instantly detect phishing emails
+
+View risk scores
+
+Track scan history securely
+
+The system uses machine learning classification to identify suspicious patterns in email text.
+
+🧠 Technologies Used
+
+Python
+
+Flask (Backend Web Framework)
+
+Machine Learning (Scikit-learn)
+
+TF-IDF Vectorization
+
+MySQL (Database)
+
+HTML, CSS, JavaScript
+
+⚙️ Features
+
+User Registration & Login
+
+AI-based Email Scanning
+
+Phishing / Safe Prediction
+
+Risk Score Generation
+
+Scan History Tracking
+
+Admin & User Dashboards
+
+Secure Session Management
+
+📁 Project Structure
 AI-Phishing_Email_Detector/
 │
-├── app.py # Main Flask application
-├── db.py # Database connection
-├── model.pkl # Trained ML model
-├── vectorizer.pkl # TF-IDF vectorizer
-├── requirements.txt # Python dependencies
-├── templates/ # HTML templates
-│ ├── dashboard.html
-│ ├── history.html
-│ ├── home.html
-│ ├── login.html
-│ ├── navbar.html
-│ ├── scan.html
-│ └── register.html
-├── static/ # CSS, JS, images
-│ ├── css/
-│ └── javascript/
-├── dataset.csv/ # Sample emails(from kaggle)
-├── phishing.db # MySQL database
-└── README.md
+├── app.py
+├── db.py
+├── ml_model.py
+├── model.pkl
+├── vectorizer.pkl
+├── requirements.txt
+├── README.md
+│
+├── templates/
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── scan.html
+│   ├── history.html
+│   └── navbar.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+└── dataset/
 
-## How It Works
+🚀 How It Works
 
-1. User submits email content
-2. Text is processed using TF-IDF
-3. Machine Learning model predicts phishing or safe
-4. Result and risk score are displayed
-5. Scan details are stored for history tracking
+User registers and logs in
 
-## Note
-This project is intended for educational and demonstration purposes.
+Email content is submitted for scanning
+
+Text is vectorized using TF-IDF
+
+ML model predicts Phishing or Safe
+
+Results and risk score are stored
+
+User can view scan history
+
+🎯 Use Cases
+
+Students & professionals
+
+Email security awareness
+
+Educational demonstrations
+
+Cybersecurity projects
+
+Imagine Cup submissions
+
+🔮 Future Enhancements
+
+Real-time email integration
+
+Deep learning models
+
+Browser extension
+
+Multi-language support
+
+Cloud deployment
+
+📝 Note
+
+This project is developed for educational and demonstration purposes.
