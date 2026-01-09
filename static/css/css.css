@@ -22,7 +22,7 @@ body {
    body::before {
     content: "";
     /* Use your Flask image path here */
-    background-image: url("{{ url_for('static', filename='background.png') }}");
+    background-image: url("{{ url_for('static', filename='logo.png') }}");
     
     background-size: contain;     /* 'contain' keeps the logo shape, 'cover' fills screen */
     background-repeat: no-repeat;
