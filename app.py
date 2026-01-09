@@ -181,7 +181,7 @@ def history():
         params = []
     else:
         sql = """
-        SELECT email_content, result, risk_score, scanned_at
+        SELECT id, email_content, result, risk_score, scanned_at
         FROM scans WHERE email_id=%s
         """
         params = [user_email]
@@ -194,10 +194,7 @@ def history():
         sql += " AND result=%s"
         params.append(filter_option)
 
-    if order == "asc":
-        sql += " ORDER BY id ASC"
-    else:
-        sql += " ORDER BY id DESC"
+    sql += " ORDER BY id ASC" if order == "asc" else " ORDER BY id DESC"
 
     cur.execute(sql, tuple(params))
     data = cur.fetchall()
@@ -211,6 +208,7 @@ def history():
         is_admin=is_admin,
         order=order
     )
+
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
@@ -260,6 +258,42 @@ def register():
             return render_template("register.html", error=error)
 
     return render_template("register.html", error=error)
+#delete 
+@app.route("/delete_history/<int:history_id>", methods=["POST"])
+def delete_history(history_id):
+    if "email_id" not in session:
+        return redirect(url_for("login"))
+
+    user_email = session["email_id"]
+    is_admin = (user_email == "admin@gmail.com")
+
+    db = get_db_connection()
+    cur = db.cursor()
+
+    if is_admin:
+        # 🔥 Admin can delete ANY record
+        cur.execute(
+            "DELETE FROM scans WHERE id=%s",
+            (history_id,)
+        )
+    else:
+        # 🔐 User can delete ONLY their records
+        cur.execute(
+            "DELETE FROM scans WHERE id=%s AND email_id=%s",
+            (history_id, user_email)
+        )
+    cur.execute(
+        "DELETE FROM scans WHERE id=%s AND email_id=%s",
+        (history_id, session["email_id"])
+    )
+
+    db.commit()
+    cur.close()
+    db.close()
+
+    return redirect(url_for("history"))
+
+
 
 
 

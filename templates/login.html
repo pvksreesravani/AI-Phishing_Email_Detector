@@ -76,15 +76,22 @@ nav{
   text-align: center;
     padding: 60px;
     display: inline-block;
-    margin-left: 100px;   
+    margin-left: 600px;   
     border-radius: 10px;
     background-color: rgb(239, 239, 245);
+}
+.btn{
+    background-color: #0a2540;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 5px;
 }
    </style>
 </head>
 <body>
     <header><h2> LOGIN PAGE </h2>
-    <nav><a href="/home" style="color: #f4f6f8;">Home</a></nav>
+    <nav><a href="{{ url_for('home') }}" style="color: #f4f6f8;">Home</a></nav>
     </header>
     
     <div class="div">
@@ -96,7 +103,7 @@ nav{
 <form method="post">
 <input type="email" name="email" placeholder="Email" required><br><br>
 <input type="password" name="password"  placeholder="Password" required><br><br>
-<button type="submit">Login</button>
+<button type="submit" class="btn">Login</button>
 </form>
 </fieldset>
 </div>

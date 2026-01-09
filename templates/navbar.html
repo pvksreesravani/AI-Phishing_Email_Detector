@@ -1,6 +1,5 @@
 <!-- NAVBAR -->
 <style>
-/* Common Navbar Styling */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -11,7 +10,6 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Navbar Links */
 .navbar a {
     color: white;
     text-decoration: none;
@@ -22,16 +20,17 @@
     background-color: #2d4c6d;
     transition: 0.3s;
 }
+
 .navbar a:hover {
     background-color: #163153;
 }
 
-/* Profile Icon */
 #profile-icon {
     cursor: pointer;
     display: flex;
     align-items: center;
 }
+
 #profile-icon img {
     width: 40px;
     height: 40px;
@@ -39,28 +38,27 @@
     margin-right: 8px;
 }
 
-/* Profile Sliding Panel */
 #profile-panel {
     position: fixed;
     top: 0;
-    right: -300px; /* hidden initially */
+    right: -300px;
     width: 20%;
-    height: 90%; /* full height to show logout */
+    height: 100%;
     background-color: #f4f6f8;
     box-shadow: -3px 0 8px rgba(0,0,0,0.2);
     padding: 20px;
     transition: right 0.3s ease;
     z-index: 1000;
-    overflow-y: auto;
 }
+
 #profile-panel img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    display: block;
     margin-bottom: 15px;
 }
-#profile-panel a.logout-btn {
+
+.logout-btn {
     display: block;
     padding: 10px;
     text-align: center;
@@ -73,58 +71,13 @@
 </style>
 
 <div class="navbar">
-    <!-- Left: Navigation Links -->
     <div>
         <a href="{{ url_for('dashboard') }}">Dashboard</a>
         <a href="{{ url_for('scan') }}">Scan</a>
         <a href="{{ url_for('history') }}">History</a>
     </div>
 
-    <!-- Right: Profile / Logout -->
     {% if session.get('email_id') %}
-        {% if show_profile_panel %}
-        <div id="profile-icon">
-            <img src="{{ url_for('static', filename='css/logo.png') }}" alt="Profile">
-            <span>{{ session['name'] }}</span>
-        </div>
-        {% else %}
-            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-        {% endif %}
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
     {% endif %}
 </div>
-
-<!-- Profile Slide Panel (only if enabled) -->
-{% if show_profile_panel %}
-<div id="profile-panel">
-    <img src="{{ url_for('static', filename='css/logo.png') }}" alt="Profile">
-    <h3>{{ session['name'] }}</h3>
-    <hr>
-    <p><strong>Email:</strong> {{ session['email_id'] }}</p>
-    <p><strong>Total Scans:</strong> {{ total }}</p>
-    <p><strong>Phishing:</strong> {{ phishing }}</p>
-    <p><strong>Safe:</strong> {{ safe }}</p>
-    <hr>
-    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
-</div>
-
-<script>
-const profileIcon = document.getElementById('profile-icon');
-const profilePanel = document.getElementById('profile-panel');
-
-// Toggle panel
-profileIcon.addEventListener('click', () => {
-    if(profilePanel.style.right === "0px") {
-        profilePanel.style.right = "-300px";
-    } else {
-        profilePanel.style.right = "0px";
-    }
-});
-
-// Click outside panel to close
-document.addEventListener('click', (e) => {
-    if (!profilePanel.contains(e.target) && !profileIcon.contains(e.target)) {
-        profilePanel.style.right = "-300px";
-    }
-});
-</script>
-{% endif %}

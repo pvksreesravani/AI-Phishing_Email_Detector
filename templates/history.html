@@ -1,164 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>History</title>
+    <meta charset="UTF-8">
+    <title>Scan History</title>
+
     <style>
-    table{
-        margin-left: 100px;
-        margin-top: 50px;
-        margin-right: 50px;
-        border-collapse: collapse;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+        }
 
-    th, td {
-        padding: 10px 15px;
-        text-align: left;
-    }
+        body::before {
+            content: "";
+            background-image: url("{{ url_for('static', filename='css/logo.png') }}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-    th {
-        background-color: #2d4c6d;
-        color: white;
-    }
+        /* NAVBAR */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0a2540;
+            padding: 15px 30px;
+            color: white;
+        }
 
-    td {
-        background-color: #f4f6f8;
-    }
+        .top-nav h2 {
+            margin: 0;
+        }
 
-    body::before {
-        content: "";
-        background-image: url("{{ url_for('static', filename='css/logo.png') }}");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-        opacity: 0.1;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
+        .top-nav .links a {
+            margin-left: 10px;
+        }
 
-    body {
-        position: relative;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: #f4f6f8;
-        color: #333;
-    }
+        /* BUTTON */
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            background-color: #2d4c6d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .btn{
-        border-radius: 8px;
-        padding: 8px 16px;
-        margin-left: 8px;
-        background-color: #2d4c6d;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        .btn:hover {
+            background-color: #1a3a5a;
+        }
 
-    .btn:hover {
-        background-color: #1a3a5a;
-    }
+        /* FILTER BAR */
+        .filter-bar {
+            text-align: center;
+            margin: 30px 0;
+        }
 
-    input{
-        opacity: 0.5;
-    }
+        .filter-bar input,
+        .filter-bar select {
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: 2px solid #2d4c6d;
+            margin: 5px;
+            outline: none;
+        }
 
-    /* Filter bar */
-    .filter-bar {
-        text-align: center;
-        margin-bottom: 30px;
-    }
+        .filter-bar button {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            background-color: #2d4c6d;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-    .filter-bar input[type="text"], .filter-bar select {
-        padding: 10px 15px;
-        border: 2px solid #2d4c6d;
-        border-radius: 25px;
-        outline: none;
-        font-size: 16px;
-        margin: 5px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
+        .filter-bar button:hover {
+            background-color: #1a3a5a;
+        }
 
-    .filter-bar button {
-        padding: 10px 20px;
-        background: linear-gradient(135deg, #2d4c6d, #1a3a5a);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
+        /* TABLE */
+        table {
+            margin: 40px auto;
+            border-collapse: collapse;
+            width: 92%;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
 
-    .filter-bar button:hover {
-        background: linear-gradient(135deg, #1a3a5a, #163153);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-    }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+        }
 
-    /* Top navbar */
-    .top-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #0a2540;
-        padding: 15px 30px;
-        color: white;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
+        th {
+            background-color: #2d4c6d;
+            color: white;
+        }
 
-    .top-nav .links a {
-        margin-left: 10px;
-    }
+        tr:nth-child(even) {
+            background-color: #f4f6f8;
+        }
 
+        .result-safe {
+            color: green;
+            font-weight: bold;
+        }
+
+        .result-phishing {
+            color: red;
+            font-weight: bold;
+        }
+
+        .result-neutral {
+            color: orange;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
-<!-- Top Navbar -->
+<!-- NAVBAR -->
 <div class="top-nav">
-    <div><h2>Scan History</h2></div>
+    <h2>Scan History</h2>
+
     {% if session.get('email_id') %}
     <div class="links">
         <span>Hello, {{ session['name'] }}</span>
         <a href="{{ url_for('dashboard') }}" class="btn">Dashboard</a>
-        <a href="{{ url_for('home') }}" class="btn">Home</a>
         <a href="{{ url_for('scan') }}" class="btn">Scan</a>
+        <a href="{{ url_for('home') }}" class="btn">Home</a>
         <a href="{{ url_for('logout') }}" class="btn">Logout</a>
     </div>
     {% endif %}
 </div>
 
-<!-- Filter / Search / Order -->
+<!-- FILTER -->
 <div class="filter-bar">
     <form method="GET" action="{{ url_for('history') }}">
-        <input type="text" name="query" placeholder="Search scans..." value="{{ request.args.get('query', '') }}">
+        <input type="text" name="query" placeholder="Search email content"
+               value="{{ request.args.get('query', '') }}">
+
         <select name="filter">
             <option value="">All</option>
-            <option value="PHISHING" {% if request.args.get('filter') == 'PHISHING' %}selected{% endif %}>Phishing</option>
-            <option value="SAFE" {% if request.args.get('filter')== 'SAFE' %}selected{% endif %}>Safe</option>
-            <option value="NEUTRAL" {% if request.args.get('filter')== 'NEUTRAL' %}selected{% endif %}>Neutral</option>
+            <option value="PHISHING" {% if request.args.get('filter')=='PHISHING' %}selected{% endif %}>Phishing</option>
+            <option value="SAFE" {% if request.args.get('filter')=='SAFE' %}selected{% endif %}>Safe</option>
+            <option value="NEUTRAL" {% if request.args.get('filter')=='NEUTRAL' %}selected{% endif %}>Neutral</option>
         </select>
-        <label>Order:</label>
-        <select name="order" onchange="this.form.submit()">
-            <option value="desc" {% if order is defined and order == 'desc' %}selected{% endif %}>Newest First</option>
-            <option value="asc" {% if order is defined and order == 'asc' %}selected{% endif %}>Oldest First</option>
+
+        <select name="order">
+            <option value="desc" {% if order=='desc' %}selected{% endif %}>Newest First</option>
+            <option value="asc" {% if order=='asc' %}selected{% endif %}>Oldest First</option>
         </select>
+
         <button type="submit">Apply</button>
     </form>
 </div>
 
-<!-- Table -->
-<table border="1" cellpadding="5" cellspacing="0">
+<!-- HISTORY TABLE -->
+<table>
     <tr>
         {% if is_admin %}
             <th>ID</th>
@@ -168,6 +180,7 @@
         <th>Result</th>
         <th>Risk Score</th>
         <th>Date</th>
+        <th>Action</th>
     </tr>
 
     {% for row in data %}
@@ -176,14 +189,32 @@
             <td>{{ row[0] }}</td>
             <td>{{ row[1] }}</td>
             <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td>{{ row[4] }}</td>
+            <td class="result-{{ row[3]|lower }}">{{ row[3] }}</td>
+            <td>{{ row[4] }}%</td>
             <td>{{ row[5] }}</td>
+            <td>
+                <form method="POST"
+                      action="{{ url_for('delete_history', history_id=row[0]) }}">
+                    <button class="btn"
+                            onclick="return confirm('Delete this scan?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
         {% else %}
-            <td>{{ row[0] }}</td>
             <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
+            <td class="result-{{ row[2]|lower }}">{{ row[2] }}</td>
+            <td>{{ row[3] }}%</td>
+            <td>{{ row[4] }}</td>
+            <td>
+                <form method="POST"
+                      action="{{ url_for('delete_history', history_id=row[0]) }}">
+                    <button class="btn"
+                            onclick="return confirm('Delete this scan?')">
+                        Delete
+                    </button>
+                </form>
+            </td>
         {% endif %}
     </tr>
     {% endfor %}
